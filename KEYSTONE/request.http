@@ -1,7 +1,98 @@
+### 1. Login as Customer
+# @name customerLogin
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "customer@keystone.com",
+  "password": "password"
+}
+
+### 2. Customer - Create Service Request (Day 5 Step 8)
+POST http://localhost:8080/api/customer/requests
+Content-Type: application/json
+Authorization: Bearer {{customerLogin.response.body.token}}
+
+{
+  "title": "Air conditioner not working",
+  "description": "The AC is not cooling properly in server room 2.",
+  "priority": "HIGH"
+}
+
+### 3. Customer - View Own Requests (Day 5 Step 10)
+GET http://localhost:8080/api/customer/requests
+Authorization: Bearer {{customerLogin.response.body.token}}
+
+
+### =========================================================
+### DAY 6 - DISPATCHER & TECHNICIAN WORKFLOW
+### =========================================================
+
+### 4. Login as Dispatcher
+# @name dispatcherLogin
 POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
   "email": "dispatcher@keystone.com",
   "password": "password"
+}
+
+### 5. Dispatcher - View All Requests (Day 6 Step 1)
+GET http://localhost:8080/api/dispatcher/requests
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+### 6. Dispatcher - View Unassigned Requests (Day 6 Step 2)
+GET http://localhost:8080/api/dispatcher/requests/unassigned
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+### 7. Dispatcher - View Technicians (Day 6 Step 3)
+GET http://localhost:8080/api/dispatcher/technicians
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+### 8. Dispatcher - Assign Technician to Request (Day 6 Step 4)
+# Note: replace requestId (e.g. 1) and technicianId (e.g. 2)
+PUT http://localhost:8080/api/dispatcher/requests/1/assign
+Content-Type: application/json
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+{
+  "technicianId": 2
+}
+
+
+### =========================================================
+### DAY 6 - TECHNICIAN WORKFLOW
+### =========================================================
+
+### 9. Login as Technician
+# @name technicianLogin
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "technician@keystone.com",
+  "password": "password"
+}
+
+### 10. Technician - View Assigned Requests (Day 6 Step 5)
+GET http://localhost:8080/api/technician/requests
+Authorization: Bearer {{technicianLogin.response.body.token}}
+
+### 11. Technician - Update Status to IN_PROGRESS (Day 6 Step 6)
+PUT http://localhost:8080/api/technician/requests/1/status
+Content-Type: application/json
+Authorization: Bearer {{technicianLogin.response.body.token}}
+
+{
+  "status": "IN_PROGRESS"
+}
+
+### 12. Technician - Update Status to COMPLETED (Day 6 Step 6)
+PUT http://localhost:8080/api/technician/requests/1/status
+Content-Type: application/json
+Authorization: Bearer {{technicianLogin.response.body.token}}
+
+{
+  "status": "COMPLETED"
 }
