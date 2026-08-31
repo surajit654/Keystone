@@ -1,0 +1,35 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE & Editor settings
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Backend (KEYSTONE)
+KEYSTONE/target/
+KEYSTONE/.mvn/wrapper/maven-wrapper.jar
+KEYSTONE/.apt_generated
+KEYSTONE/.classpath
+KEYSTONE/.factorypath
+KEYSTONE/.project
+KEYSTONE/.settings
+KEYSTONE/.springBeans
+KEYSTONE/.sts4-cache
+
+# Frontend (frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+frontend/logs/
+frontend/*.log
