@@ -39,6 +39,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/hello").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
+                        .requestMatchers("/error").permitAll()
 
                         .requestMatchers("/api/dispatcher/**")
                         .hasRole("DISPATCHER")
@@ -49,8 +51,17 @@ public class SecurityConfig {
                         .requestMatchers("/api/manager/**")
                         .hasRole("MANAGER")
 
-                        .requestMatchers("/api/customer/**")
-                        .hasRole("CUSTOMER")
+                        .requestMatchers("/api/customers/**")
+                        .hasAnyRole("DISPATCHER", "MANAGER", "CUSTOMER")
+
+                        .requestMatchers("/api/parts/**")
+                        .hasAnyRole("DISPATCHER", "MANAGER", "TECHNICIAN")
+
+                        .requestMatchers("/api/reports/**")
+                        .hasAnyRole("DISPATCHER", "MANAGER")
+
+                        .requestMatchers("/api/work-orders/**")
+                        .hasAnyRole("DISPATCHER", "MANAGER", "TECHNICIAN", "CUSTOMER")
 
                         .anyRequest().authenticated()
                 )

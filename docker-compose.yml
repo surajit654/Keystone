@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Database Service (PostgreSQL 16)
+  postgres:
+    image: postgres:16-alpine
+    container_name: keystone-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: keystone
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d keystone"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - keystone-net
+
+  # Backend Service (Spring Boot 3 + Java 21)
+  backend:
+    build:
+      context: ./KEYSTONE
+      dockerfile: Dockerfile
+    container_name: keystone-backend
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/keystone
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: "true"
+    ports:
+      - "8080:8080"
+    networks:
+      - keystone-net
+
+  # Frontend Service (React + Vite + Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: keystone-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+      - "80:80"
+    networks:
+      - keystone-net
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  keystone-net:
+    driver: bridge

@@ -27,7 +27,18 @@ public class WorkOrderStatusHistory {
     @JoinColumn(name = "changed_by")
     private User changedBy;
 
+    @Column(length = 1000)
+    private String note;
+
     public WorkOrderStatusHistory() {
+    }
+
+    public WorkOrderStatusHistory(WorkOrder workOrder, WorkOrderStatus status, User changedBy, LocalDateTime changedAt, String note) {
+        this.workOrder = workOrder;
+        this.status = status;
+        this.changedBy = changedBy;
+        this.changedAt = changedAt;
+        this.note = note;
     }
 
     public Long getId() {
@@ -68,5 +79,13 @@ public class WorkOrderStatusHistory {
 
     public void setChangedBy(User changedBy) {
         this.changedBy = changedBy;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

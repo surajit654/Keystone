@@ -96,3 +96,170 @@ Authorization: Bearer {{technicianLogin.response.body.token}}
 {
   "status": "COMPLETED"
 }
+
+
+### =========================================================
+### WEEK 2 - CUSTOMER & SITE MANAGEMENT (DAY 6)
+### =========================================================
+
+### 13. Dispatcher - Create Customer
+POST http://localhost:8080/api/customers
+Content-Type: application/json
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+{
+  "name": "Apex Commercial Tower",
+  "email": "facilities@apexcommercial.com",
+  "phone": "+1-555-0199"
+}
+
+### 14. Dispatcher - List All Customers (Paginated)
+GET http://localhost:8080/api/customers?page=0&size=10
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+### 15. Dispatcher - Create Site for Customer 1
+POST http://localhost:8080/api/customers/1/sites
+Content-Type: application/json
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+{
+  "name": "Meridian HQ - North Tower",
+  "address": "100 Financial Blvd",
+  "city": "Metro City"
+}
+
+### 16. Dispatcher - Get Sites for Customer 1
+GET http://localhost:8080/api/customers/1/sites
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+
+### =========================================================
+### WEEK 2 - WORK-ORDER CRUD & SEARCH (DAYS 7-8 & 10)
+### =========================================================
+
+### 17. Dispatcher - Create Work Order
+POST http://localhost:8080/api/work-orders
+Content-Type: application/json
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+{
+  "title": "HVAC Chiller Pressure Low",
+  "description": "Primary chiller on roof level showing low pressure warning.",
+  "priority": "HIGH",
+  "customerId": 1,
+  "siteId": 1,
+  "assigneeId": 2
+}
+
+### 18. Dispatcher - Get Work Order By ID
+GET http://localhost:8080/api/work-orders/1
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+### 19. Dispatcher - Update Work Order
+PUT http://localhost:8080/api/work-orders/1
+Content-Type: application/json
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+{
+  "title": "HVAC Chiller Pressure Low - Urgent",
+  "description": "Primary chiller on roof level showing critical low pressure warning.",
+  "priority": "HIGH",
+  "siteId": 1
+}
+
+### 20. Dispatcher - Search and Filter Work Orders (Paginated & Filtered)
+GET http://localhost:8080/api/work-orders?status=ASSIGNED&priority=HIGH&page=0&size=10
+Authorization: Bearer {{dispatcherLogin.response.body.token}}
+
+
+### =========================================================
+### WEEK 3 - GOVERNED STATE MACHINE, AUDIT, PARTS & TIME
+### =========================================================
+
+### 21. Manager Login
+# @name managerLogin
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "manager@keystone.com",
+  "password": "password"
+}
+
+### 22. Technician - Start Work (ASSIGNED -> IN_PROGRESS)
+POST http://localhost:8080/api/work-orders/1/status
+Content-Type: application/json
+Authorization: Bearer {{technicianLogin.response.body.token}}
+
+{
+  "status": "IN_PROGRESS",
+  "note": "Arrived on site and initiated chiller diagnostics."
+}
+
+### 23. Get Available Inventory Parts
+GET http://localhost:8080/api/parts
+Authorization: Bearer {{technicianLogin.response.body.token}}
+
+### 24. Technician - Log Parts Consumed (Transactional Stock Decrement)
+POST http://localhost:8080/api/work-orders/1/parts
+Content-Type: application/json
+Authorization: Bearer {{technicianLogin.response.body.token}}
+
+{
+  "partId": 1,
+  "quantity": 2
+}
+
+### 25. Technician - Log Labor Time Spent
+POST http://localhost:8080/api/work-orders/1/time
+Content-Type: application/json
+Authorization: Bearer {{technicianLogin.response.body.token}}
+
+{
+  "minutes": 90,
+  "note": "Replaced air filter and calibrated intake valve."
+}
+
+### 26. Technician - Pause Work (IN_PROGRESS -> ON_HOLD)
+POST http://localhost:8080/api/work-orders/1/status
+Content-Type: application/json
+Authorization: Bearer {{technicianLogin.response.body.token}}
+
+{
+  "status": "ON_HOLD",
+  "note": "Waiting on secondary copper pipe delivery."
+}
+
+### 27. Technician - Resume & Complete Work (ON_HOLD -> IN_PROGRESS -> COMPLETED)
+POST http://localhost:8080/api/work-orders/1/status
+Content-Type: application/json
+Authorization: Bearer {{technicianLogin.response.body.token}}
+
+{
+  "status": "IN_PROGRESS",
+  "note": "Parts arrived. Resuming compressor reassembly."
+}
+
+### 28. Technician - Mark Work Completed
+POST http://localhost:8080/api/work-orders/1/status
+Content-Type: application/json
+Authorization: Bearer {{technicianLogin.response.body.token}}
+
+{
+  "status": "COMPLETED",
+  "note": "All testing passed. Pressure stabilized at 45 PSI."
+}
+
+### 29. Manager - Final Close-Out & Billing (COMPLETED -> CLOSED)
+POST http://localhost:8080/api/work-orders/1/status
+Content-Type: application/json
+Authorization: Bearer {{managerLogin.response.body.token}}
+
+{
+  "status": "CLOSED",
+  "note": "Verified customer satisfaction and billed parts and labor."
+}
+
+### 30. Get Full Audit Status History Timeline
+GET http://localhost:8080/api/work-orders/1/history
+Authorization: Bearer {{managerLogin.response.body.token}}

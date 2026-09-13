@@ -1,32 +1,103 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
-import Login from "./pages/Login";
-import DashboardPage from "./pages/DashboardPage";
-import WorkOrders from "./pages/WorkOrders";
-import Technicians from "./pages/Technicians";
-import Customers from "./pages/Customers";
+import Login from './pages/Login';
+import DashboardPage from './pages/DashboardPage';
+import WorkOrders from './pages/WorkOrders';
+import Technicians from './pages/Technicians';
+import Customers from './pages/Customers';
+import CustomerPortal from './pages/CustomerPortal';
 
-import "./App.css";
+import './App.css';
+
+function ProtectedRoute({ children, allowedRoles }) {
+  const { user, isAuthenticated } = useAuth();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  if (allowedRoles && !allowedRoles.includes(user?.role)) {
+    if (user?.role === 'CUSTOMER') {
+      return <Navigate to="/portal" replace />;
+    }
+    if (user?.role === 'TECHNICIAN') {
+      return <Navigate to="/technicians" replace />;
+    }
+    return <Navigate to="/work-orders" replace />;
+  }
+  return children;
+}
+
+function HomeRedirect() {
+  const { user, isAuthenticated } = useAuth();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  if (user?.role === 'CUSTOMER') {
+    return <Navigate to="/portal" replace />;
+  }
+  if (user?.role === 'TECHNICIAN') {
+    return <Navigate to="/technicians" replace />;
+  }
+  return <Navigate to="/dashboard" replace />;
+}
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomeRedirect />} />
+          <Route path="/login" element={<Login />} />
 
-        <Route path="/" element={<Login />} />
+          <Route
+            path="/portal"
+            element={
+              <ProtectedRoute allowedRoles={['CUSTOMER', 'MANAGER']}>
+                <CustomerPortal />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="/login" element={<Login />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['MANAGER', 'DISPATCHER']}>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="/dashboard" element={<DashboardPage />} />
+          <Route
+            path="/work-orders"
+            element={
+              <ProtectedRoute allowedRoles={['DISPATCHER', 'MANAGER', 'TECHNICIAN']}>
+                <WorkOrders />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="/work-orders" element={<WorkOrders />} />
+          <Route
+            path="/technicians"
+            element={
+              <ProtectedRoute allowedRoles={['DISPATCHER', 'MANAGER', 'TECHNICIAN']}>
+                <Technicians />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="/technicians" element={<Technicians />} />
+          <Route
+            path="/customers"
+            element={
+              <ProtectedRoute allowedRoles={['DISPATCHER', 'MANAGER']}>
+                <Customers />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="/customers" element={<Customers />} />
-
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<HomeRedirect />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
