@@ -3,15 +3,15 @@ package com.KEYSTONE.service;
 import com.KEYSTONE.dto.CreateServiceRequestRequest;
 import com.KEYSTONE.dto.ServiceRequestResponse;
 import com.KEYSTONE.dto.TechnicianResponse;
-import com.KEYSTONE.model.Role;
-import com.KEYSTONE.model.ServiceRequest;
-import com.KEYSTONE.model.User;
-import com.KEYSTONE.repository.ServiceRequestRepository;
-import com.KEYSTONE.repository.UserRepository;
+import com.KEYSTONE.model.*;
+import com.KEYSTONE.repository.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,56 +20,126 @@ public class ServiceRequestService {
 
     private final ServiceRequestRepository serviceRequestRepository;
     private final UserRepository userRepository;
+    private final WorkOrderRepository workOrderRepository;
+    private final CustomerRepository customerRepository;
+    private final SiteRepository siteRepository;
+    private final WorkOrderStatusHistoryRepository historyRepository;
 
     public ServiceRequestService(ServiceRequestRepository serviceRequestRepository,
-                                 UserRepository userRepository) {
+                                 UserRepository userRepository,
+                                 WorkOrderRepository workOrderRepository,
+                                 CustomerRepository customerRepository,
+                                 SiteRepository siteRepository,
+                                 WorkOrderStatusHistoryRepository historyRepository) {
         this.serviceRequestRepository = serviceRequestRepository;
         this.userRepository = userRepository;
+        this.workOrderRepository = workOrderRepository;
+        this.customerRepository = customerRepository;
+        this.siteRepository = siteRepository;
+        this.historyRepository = historyRepository;
     }
 
     // --- Customer Operations ---
 
+    @Transactional
     public ServiceRequestResponse createCustomerRequest(CreateServiceRequestRequest request, String customerEmail) {
-        User customer = userRepository.findByEmail(customerEmail)
+        User customerUser = userRepository.findByEmail(customerEmail)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + customerEmail));
 
+        // 1. Resolve Customer entity
+        Customer customer = customerRepository.findByEmail(customerEmail)
+                .orElseGet(() -> customerRepository.findAll().stream().findFirst()
+                        .orElseGet(() -> customerRepository.save(new Customer("Customer Account", customerEmail, "555-0100"))));
+
+        // 2. Resolve Site entity
+        List<Site> sites = siteRepository.findByCustomerId(customer.getId());
+        Site site;
+        if (!sites.isEmpty()) {
+            site = sites.get(0);
+        } else {
+            List<Site> allSites = siteRepository.findAll();
+            if (!allSites.isEmpty()) {
+                site = allSites.get(0);
+            } else {
+                site = siteRepository.save(new Site("Main Campus HQ", "100 Primary Way", "New York", customer));
+            }
+        }
+
+        String priority = request.getPriority() != null ? request.getPriority().trim().toUpperCase() : "MEDIUM";
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime slaDueAt = calculateSlaDueAt(now, priority);
+        String generatedCode = generateNextWorkOrderCode();
+
+        // 3. Create WorkOrder so it immediately appears in Dispatcher's Kanban Board
+        WorkOrder workOrder = new WorkOrder();
+        workOrder.setCode(generatedCode);
+        workOrder.setTitle(request.getTitle());
+        workOrder.setDescription(request.getDescription());
+        workOrder.setPriority(priority);
+        workOrder.setStatus(WorkOrderStatus.NEW);
+        workOrder.setSlaDueAt(slaDueAt);
+        workOrder.setCustomer(customer);
+        workOrder.setSite(site);
+        workOrder.setAssignee(null);
+
+        WorkOrder savedWo = workOrderRepository.save(workOrder);
+
+        // Record initial status in audit history
+        WorkOrderStatusHistory history = new WorkOrderStatusHistory(
+                savedWo,
+                WorkOrderStatus.NEW,
+                customerUser,
+                now,
+                "Ticket raised via Customer Self-Service Portal"
+        );
+        historyRepository.save(history);
+
+        // 4. Save in ServiceRequest table for backward-compatibility
         ServiceRequest serviceRequest = new ServiceRequest();
-        serviceRequest.setCustomerId(customer.getId());
+        serviceRequest.setCustomerId(customerUser.getId());
         serviceRequest.setTitle(request.getTitle());
         serviceRequest.setDescription(request.getDescription());
-        serviceRequest.setPriority(request.getPriority() != null ? request.getPriority() : "MEDIUM");
-        serviceRequest.setStatus("PENDING");
+        serviceRequest.setPriority(priority);
+        serviceRequest.setStatus("NEW");
         serviceRequest.setAssignedTechnicianId(null);
-        serviceRequest.setCreatedAt(LocalDateTime.now());
-        serviceRequest.setUpdatedAt(LocalDateTime.now());
+        serviceRequest.setCreatedAt(now);
+        serviceRequest.setUpdatedAt(now);
+        serviceRequestRepository.save(serviceRequest);
 
-        ServiceRequest saved = serviceRequestRepository.save(serviceRequest);
-        return ServiceRequestResponse.fromEntity(saved);
+        ServiceRequestResponse response = ServiceRequestResponse.fromWorkOrder(savedWo);
+        response.setCreatedAt(now);
+        return response;
     }
 
     public List<ServiceRequestResponse> getCustomerRequests(String customerEmail) {
-        User customer = userRepository.findByEmail(customerEmail)
+        User customerUser = userRepository.findByEmail(customerEmail)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + customerEmail));
 
-        return serviceRequestRepository.findByCustomerIdOrderByCreatedAtDesc(customer.getId())
-                .stream()
-                .map(ServiceRequestResponse::fromEntity)
+        Customer customer = customerRepository.findByEmail(customerEmail).orElse(null);
+        List<WorkOrder> workOrders = new ArrayList<>();
+        if (customer != null) {
+            workOrders = workOrderRepository.findByCustomerId(customer.getId());
+        } else {
+            // Fallback to all work orders if single tenant demo
+            workOrders = workOrderRepository.findAll();
+        }
+
+        return workOrders.stream()
+                .map(ServiceRequestResponse::fromWorkOrder)
                 .collect(Collectors.toList());
     }
 
     // --- Dispatcher Operations ---
 
     public List<ServiceRequestResponse> getAllRequests() {
-        return serviceRequestRepository.findAllByOrderByCreatedAtDesc()
-                .stream()
-                .map(ServiceRequestResponse::fromEntity)
+        return workOrderRepository.findAll().stream()
+                .map(ServiceRequestResponse::fromWorkOrder)
                 .collect(Collectors.toList());
     }
 
     public List<ServiceRequestResponse> getUnassignedRequests() {
-        return serviceRequestRepository.findByAssignedTechnicianIdIsNullOrderByCreatedAtDesc()
-                .stream()
-                .map(ServiceRequestResponse::fromEntity)
+        return workOrderRepository.findByStatus(WorkOrderStatus.NEW).stream()
+                .map(ServiceRequestResponse::fromWorkOrder)
                 .collect(Collectors.toList());
     }
 
@@ -80,9 +150,10 @@ public class ServiceRequestService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public ServiceRequestResponse assignTechnician(Long requestId, Long technicianId) {
-        ServiceRequest request = serviceRequestRepository.findById(requestId)
-                .orElseThrow(() -> new IllegalArgumentException("Service request not found with ID: " + requestId));
+        WorkOrder workOrder = workOrderRepository.findById(requestId)
+                .orElseThrow(() -> new IllegalArgumentException("Work order not found with ID: " + requestId));
 
         User technician = userRepository.findById(technicianId)
                 .orElseThrow(() -> new IllegalArgumentException("Technician not found with ID: " + technicianId));
@@ -91,12 +162,11 @@ public class ServiceRequestService {
             throw new IllegalArgumentException("User with ID " + technicianId + " is not a technician");
         }
 
-        request.setAssignedTechnicianId(technicianId);
-        request.setStatus("ASSIGNED");
-        request.setUpdatedAt(LocalDateTime.now());
+        workOrder.setAssignee(technician);
+        workOrder.setStatus(WorkOrderStatus.ASSIGNED);
+        WorkOrder saved = workOrderRepository.save(workOrder);
 
-        ServiceRequest saved = serviceRequestRepository.save(request);
-        return ServiceRequestResponse.fromEntity(saved);
+        return ServiceRequestResponse.fromWorkOrder(saved);
     }
 
     // --- Technician Operations ---
@@ -105,38 +175,45 @@ public class ServiceRequestService {
         User technician = userRepository.findByEmail(technicianEmail)
                 .orElseThrow(() -> new IllegalArgumentException("Technician not found: " + technicianEmail));
 
-        return serviceRequestRepository.findByAssignedTechnicianIdOrderByCreatedAtDesc(technician.getId())
+        return workOrderRepository.findByAssigneeId(technician.getId())
                 .stream()
-                .map(ServiceRequestResponse::fromEntity)
+                .map(ServiceRequestResponse::fromWorkOrder)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public ServiceRequestResponse updateTechnicianRequestStatus(Long requestId, String newStatus, String technicianEmail) {
         User technician = userRepository.findByEmail(technicianEmail)
                 .orElseThrow(() -> new IllegalArgumentException("Technician not found: " + technicianEmail));
 
-        ServiceRequest request = serviceRequestRepository.findById(requestId)
-                .orElseThrow(() -> new IllegalArgumentException("Service request not found with ID: " + requestId));
+        WorkOrder workOrder = workOrderRepository.findById(requestId)
+                .orElseThrow(() -> new IllegalArgumentException("Work order not found with ID: " + requestId));
 
-        if (request.getAssignedTechnicianId() == null || !request.getAssignedTechnicianId().equals(technician.getId())) {
-            throw new AccessDeniedException("You are not authorized to update this service request");
+        if (workOrder.getAssignee() == null || !workOrder.getAssignee().getId().equals(technician.getId())) {
+            throw new AccessDeniedException("You are not authorized to update this work order");
         }
 
-        String currentStatus = request.getStatus();
-        String targetStatus = newStatus != null ? newStatus.trim().toUpperCase() : "";
+        WorkOrderStatus targetStatus = WorkOrderStatus.valueOf(newStatus.trim().toUpperCase());
+        workOrder.setStatus(targetStatus);
+        WorkOrder saved = workOrderRepository.save(workOrder);
 
-        // Validate allowed transitions: ASSIGNED -> IN_PROGRESS -> COMPLETED
-        boolean isValidTransition = ("ASSIGNED".equalsIgnoreCase(currentStatus) && "IN_PROGRESS".equalsIgnoreCase(targetStatus))
-                || ("IN_PROGRESS".equalsIgnoreCase(currentStatus) && "COMPLETED".equalsIgnoreCase(targetStatus));
+        return ServiceRequestResponse.fromWorkOrder(saved);
+    }
 
-        if (!isValidTransition) {
-            throw new IllegalArgumentException("Invalid status transition from " + currentStatus + " to " + targetStatus);
-        }
+    // --- Helper Methods ---
 
-        request.setStatus(targetStatus);
-        request.setUpdatedAt(LocalDateTime.now());
+    private LocalDateTime calculateSlaDueAt(LocalDateTime start, String priority) {
+        return switch (priority.toUpperCase()) {
+            case "HIGH" -> start.plusHours(4);
+            case "LOW" -> start.plusHours(48);
+            default -> start.plusHours(24); // MEDIUM
+        };
+    }
 
-        ServiceRequest saved = serviceRequestRepository.save(request);
-        return ServiceRequestResponse.fromEntity(saved);
+    private synchronized String generateNextWorkOrderCode() {
+        int currentYear = Year.now().getValue();
+        String prefix = "WO-" + currentYear + "-";
+        long count = workOrderRepository.countByCodePrefix(prefix);
+        return String.format("%s%04d", prefix, count + 1);
     }
 }

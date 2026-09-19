@@ -52,9 +52,11 @@ function CustomerPortal() {
   };
 
   const getStatusStep = (status) => {
-    const steps = ['PENDING', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED'];
-    const index = steps.indexOf(status?.toUpperCase());
-    return index >= 0 ? index : 0;
+    const s = status?.toUpperCase();
+    if (s === 'COMPLETED' || s === 'CLOSED') return 3;
+    if (s === 'IN_PROGRESS' || s === 'ON_HOLD') return 2;
+    if (s === 'ASSIGNED') return 1;
+    return 0; // NEW or PENDING
   };
 
   return (
@@ -131,7 +133,7 @@ function CustomerPortal() {
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                         <span className="badge" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--accent-cyan)' }}>
-                          REQUEST #{req.id}
+                          {req.code || `REQUEST #${req.id}`}
                         </span>
                         <span className={`badge badge-${req.priority?.toLowerCase() || 'medium'}`}>
                           {req.priority} PRIORITY
