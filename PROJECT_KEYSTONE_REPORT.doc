@@ -1,0 +1,787 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>PROJECT REPORT — PROJECT KEYSTONE</title>
+<!--[if gte mso 9]>
+<xml>
+ <w:WordDocument>
+  <w:View>Print</w:View>
+  <w:Zoom>100</w:Zoom>
+  <w:DoNotOptimizeForBrowser/>
+ </w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+  @page Section1 {
+    size: 8.5in 11.0in;
+    margin: 1.0in 1.0in 1.0in 1.0in;
+    mso-header-margin: 0.5in;
+    mso-footer-margin: 0.5in;
+    mso-paper-source: 0;
+  }
+  div.Section1 { page: Section1; }
+  
+  body {
+    font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
+    font-size: 11.5pt;
+    line-height: 1.6;
+    color: #1e293b;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    color: #0f172a;
+    font-size: 20pt;
+    font-weight: 700;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 6px;
+    margin-top: 28pt;
+    margin-bottom: 12pt;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    color: #1e40af;
+    font-size: 15pt;
+    font-weight: 600;
+    margin-top: 18pt;
+    margin-bottom: 8pt;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    color: #334155;
+    font-size: 12.5pt;
+    font-weight: 600;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+    page-break-after: avoid;
+  }
+
+  p, li {
+    font-size: 11pt;
+    line-height: 1.6;
+    margin-bottom: 8pt;
+  }
+
+  ul, ol {
+    margin-top: 4pt;
+    margin-bottom: 12pt;
+    padding-left: 24pt;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12pt;
+    margin-bottom: 16pt;
+    font-size: 10pt;
+  }
+
+  table, th, td {
+    border: 1px solid #cbd5e1;
+  }
+
+  th {
+    background-color: #1e3a8a;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 8pt 10pt;
+    text-align: left;
+  }
+
+  td {
+    padding: 7pt 10pt;
+    background-color: #ffffff;
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+
+  .cover-page {
+    text-align: center;
+    padding-top: 80pt;
+    padding-bottom: 80pt;
+  }
+
+  .cover-title {
+    font-size: 30pt;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8pt;
+    letter-spacing: 1px;
+  }
+
+  .cover-subtitle {
+    font-size: 16pt;
+    font-weight: 500;
+    color: #2563eb;
+    margin-bottom: 24pt;
+  }
+
+  .cover-divider {
+    width: 120pt;
+    height: 4pt;
+    background-color: #2563eb;
+    margin: 0 auto 36pt auto;
+  }
+
+  .cover-meta {
+    font-size: 12pt;
+    color: #475569;
+    line-height: 2.0;
+    margin-top: 40pt;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2pt 6pt;
+    font-size: 9pt;
+    font-weight: 600;
+    border-radius: 4pt;
+    background-color: #e0f2fe;
+    color: #0369a1;
+  }
+
+  .callout {
+    background-color: #f0fdf4;
+    border-left: 4px solid #16a34a;
+    padding: 10pt 14pt;
+    margin: 14pt 0;
+    font-size: 10.5pt;
+  }
+
+  .code-block {
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 9.5pt;
+    padding: 12pt;
+    border-radius: 6pt;
+    margin: 12pt 0;
+    line-height: 1.4;
+    white-space: pre-wrap;
+  }
+
+  .page-break {
+    page-break-before: always;
+    mso-special-character: line-break;
+  }
+</style>
+</head>
+<body>
+
+<div class="Section1">
+
+<!-- ========================================================================= -->
+<!-- 1. TITLE PAGE -->
+<!-- ========================================================================= -->
+<div class="cover-page">
+  <div style="font-size: 14pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16pt;">
+    Final Engineering Project Report
+  </div>
+  
+  <div class="cover-title">PROJECT KEYSTONE</div>
+  <div class="cover-subtitle">Enterprise Field Service & Work Order Management Platform</div>
+  <div class="cover-divider"></div>
+  
+  <div style="font-size: 13pt; font-weight: 600; color: #334155; margin-bottom: 8pt;">
+    Built for: Meridian Facilities Management
+  </div>
+  
+  <div class="cover-meta">
+    <strong>Author / Lead Engineer:</strong> Surajit<br>
+    <strong>Core Technologies:</strong> Spring Boot 3 (Java 21) · React 19 · PostgreSQL 16 · Vite · Docker · JWT<br>
+    <strong>Repository:</strong> https://github.com/surajit654/Keystone<br>
+    <strong>Date of Submission:</strong> September 2026
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ========================================================================= -->
+<!-- 2. ABSTRACT -->
+<!-- ========================================================================= -->
+<h1>2. Abstract</h1>
+<p>
+Field Service Management (FSM) is a mission-critical capability for modern facility management and maintenance companies. Traditional service organizations rely on fragmented workflows, manual spreadsheets, phone calls, and paper work orders. This results in frequent SLA breaches, lost billing hours, untracked parts inventory, lack of visibility into field technician workloads, and degraded customer satisfaction.
+</p>
+<p>
+<strong>Project KEYSTONE</strong> is an enterprise-grade, high-throughput Field Service and Work Order Management platform engineered for <strong>Meridian Facilities Management</strong>. The platform establishes a <strong>strictly governed 7-stage state machine</strong> for work orders, automated priority-based <strong>SLA monitoring with background breach detection</strong>, transactional <strong>inventory decrementing and technician labor time tracking</strong>, <strong>Role-Based Access Control (RBAC)</strong> across 4 distinct organizational personas (Customer, Dispatcher, Technician, Manager), an interactive <strong>7-column Kanban board</strong>, an <strong>Executive KPI Analytics Dashboard</strong>, and a <strong>Customer Self-Service Portal</strong>.
+</p>
+<p>
+Built using <strong>Spring Boot 3 (Java 21 LTS)</strong>, <strong>PostgreSQL 16</strong>, and <strong>React 19 (Vite)</strong>, the architecture incorporates stateless <strong>JWT security</strong>, 15 versioned <strong>Flyway database migrations</strong>, a comprehensive <strong>automated unit/integration test suite</strong>, and complete containerization via <strong>Docker and Docker Compose</strong> for production deployment.
+</p>
+
+<!-- ========================================================================= -->
+<!-- 3. INTRODUCTION -->
+<!-- ========================================================================= -->
+<h1>3. Introduction</h1>
+
+<h2>3.1 Problem Statement</h2>
+<p>
+Facility management enterprises manage hundreds of high-value commercial assets (HVAC chillers, emergency generators, electrical switchboards, automated access gates, plumbing grids) across distributed client campuses. Meridian Facilities Management faced major operational bottlenecks:
+</p>
+<ul>
+  <li><strong>Unstructured Intake & Response Delays:</strong> Clients reported equipment breakdowns via ad-hoc emails or phone calls without automated ticket triage, causing missed SLAs.</li>
+  <li><strong>Untracked Parts & Labor Financials:</strong> Field technicians consumed replacement parts without atomic inventory deduction, leading to inventory discrepancies and unbilled labor hours.</li>
+  <li><strong>Lack of Workflow Governance:</strong> Without an enforced state machine, work orders were prematurely closed, bypass transitions occurred, and audit trails of approvals were missing.</li>
+  <li><strong>Zero Executive Visibility:</strong> Management lacked live analytics on SLA compliance rates, technician utilization, and facility-specific maintenance costs.</li>
+</ul>
+
+<h2>3.2 Motivation</h2>
+<p>
+The motivation for Project KEYSTONE was to engineer an end-to-end digital operations platform that streamlines the lifecycle of a maintenance request from the second a customer raises a ticket, through dispatcher scheduling, technician execution, inventory consumption, and manager audit and close-out.
+</p>
+
+<h2>3.3 Objectives</h2>
+<ul>
+  <li><strong>Strict State Machine Governance:</strong> Enforce a deterministic lifecycle (<code>NEW</code> ➔ <code>ASSIGNED</code> ➔ <code>IN_PROGRESS</code> ➔ <code>ON_HOLD</code> ➔ <code>COMPLETED</code> ➔ <code>CLOSED</code>) with append-only audit logging.</li>
+  <li><strong>Automated Priority-Based SLA Engine:</strong> Dynamically compute SLA deadlines by ticket priority (Critical: 2h, High: 4h, Medium: 8h/24h, Low: 48h) with background breach alerts.</li>
+  <li><strong>Transactional Inventory & Labor Integrity:</strong> Atomically deduct inventory stock with non-negative invariants and log technician labor hours for real-time gross margin analytics.</li>
+  <li><strong>Persona-Tailored Workspaces:</strong> Deliver purpose-built interfaces for 4 roles: Manager, Dispatcher, Technician, and Customer.</li>
+  <li><strong>Cloud-Native Production Readiness:</strong> Containerize using multi-stage Docker builds and deliver interactive OpenAPI 3.0 (Swagger UI) documentation.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- 4. PROJECT OVERVIEW -->
+<!-- ========================================================================= -->
+<h1>4. Project Overview</h1>
+<p>
+Project KEYSTONE links all four operational stakeholders in an integrated digital ecosystem:
+</p>
+<ul>
+  <li><strong>Customer Self-Service Portal (<code>/portal</code>):</strong> Allows commercial clients to submit urgent service requests and follow real-time progress timelines from Submission to Completion.</li>
+  <li><strong>Dispatcher Operations Hub (<code>/work-orders</code>):</strong> Provides an interactive 7-column Kanban board, live filtering, and 1-click technician assignment.</li>
+  <li><strong>Technician Field Workbench (<code>/technicians</code>):</strong> Mobile-optimized view for field engineers to start jobs, record consumed parts, log labor minutes, and mark completion.</li>
+  <li><strong>Executive Management Dashboard (<code>/dashboard</code>):</strong> Delivers live executive KPI metrics including overall SLA compliance (%), active jobs, parts/labor expenditures, and site workload distributions.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- 5. TECHNOLOGY STACK -->
+<!-- ========================================================================= -->
+<h1>5. Technology Stack</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>Technology</th>
+      <th>Version</th>
+      <th>Architectural Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Backend Framework</strong></td>
+      <td>Spring Boot</td>
+      <td>3.4+</td>
+      <td>RESTful API, Spring Security, Business Services, JPA Repositories</td>
+    </tr>
+    <tr>
+      <td><strong>Programming Language</strong></td>
+      <td>Java (JDK)</td>
+      <td>21 (LTS)</td>
+      <td>Modern Java (Records, Pattern Matching, Enhanced Switch, Virtual Threads)</td>
+    </tr>
+    <tr>
+      <td><strong>Persistence & ORM</strong></td>
+      <td>Spring Data JPA / Hibernate</td>
+      <td>6.x</td>
+      <td>Object-relational mapping, transactional boundaries, JPA Specifications</td>
+    </tr>
+    <tr>
+      <td><strong>Database Engine</strong></td>
+      <td>PostgreSQL</td>
+      <td>16.x</td>
+      <td>ACID-compliant relational database with foreign key constraints and indexes</td>
+    </tr>
+    <tr>
+      <td><strong>Database Migrations</strong></td>
+      <td>Flyway</td>
+      <td>V1–V15</td>
+      <td>Version-controlled schema migrations and seed reference data</td>
+    </tr>
+    <tr>
+      <td><strong>Security & Auth</strong></td>
+      <td>Spring Security + JJWT</td>
+      <td>0.12.6</td>
+      <td>Stateless JWT token authentication, BCrypt password hashing, RBAC claims</td>
+    </tr>
+    <tr>
+      <td><strong>API Documentation</strong></td>
+      <td>Springdoc OpenAPI / Swagger</td>
+      <td>3.0</td>
+      <td>Interactive Swagger UI at <code>/swagger-ui.html</code></td>
+    </tr>
+    <tr>
+      <td><strong>Frontend Framework</strong></td>
+      <td>React</td>
+      <td>19.x</td>
+      <td>Component-driven Single Page Application (SPA)</td>
+    </tr>
+    <tr>
+      <td><strong>Build Tool & Bundler</strong></td>
+      <td>Vite</td>
+      <td>8.x</td>
+      <td>Ultra-fast HMR and optimized production bundle compilation</td>
+    </tr>
+    <tr>
+      <td><strong>Client-Side Routing</strong></td>
+      <td>React Router DOM</td>
+      <td>7.x</td>
+      <td>Declarative client-side routing, protected routes, and role-based redirects</td>
+    </tr>
+    <tr>
+      <td><strong>UI & Styling</strong></td>
+      <td>Vanilla Design Tokens / CSS</td>
+      <td>CSS3</td>
+      <td>Glassmorphic dark-mode styling, responsive grids, micro-animations</td>
+    </tr>
+    <tr>
+      <td><strong>Containerization</strong></td>
+      <td>Docker & Docker Compose</td>
+      <td>Multi-stage</td>
+      <td>Production Docker builds (Nginx for React, Temurin JRE 21 for Spring Boot)</td>
+    </tr>
+    <tr>
+      <td><strong>Cloud Deployment</strong></td>
+      <td>Railway / Supabase</td>
+      <td>Cloud</td>
+      <td>Containerized cloud hosting with automated CI/CD builds</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================================= -->
+<!-- 6. SYSTEM REQUIREMENTS -->
+<!-- ========================================================================= -->
+<h1>6. System Requirements</h1>
+
+<h3>6.1 Hardware Specifications</h3>
+<ul>
+  <li><strong>Processor:</strong> Dual-Core 2.0 GHz or higher (Quad-Core Intel Core i5 / AMD Ryzen 5 recommended).</li>
+  <li><strong>RAM:</strong> 4 GB minimum (8 GB to 16 GB recommended for running Docker containers and local JVM).</li>
+  <li><strong>Disk Space:</strong> 2 GB minimum free disk space.</li>
+  <li><strong>Network:</strong> Broadband Internet connection for dependency fetching and API access.</li>
+</ul>
+
+<h3>6.2 Software Prerequisites</h3>
+<ul>
+  <li><strong>Operating System:</strong> Windows 10/11, macOS 12+, or Ubuntu Linux 20.04+.</li>
+  <li><strong>Java Runtime:</strong> JDK 21 (Eclipse Temurin / Oracle OpenJDK).</li>
+  <li><strong>Node Environment:</strong> Node.js v20+ and npm v10+.</li>
+  <li><strong>Database Engine:</strong> PostgreSQL 16+ (or Docker Engine).</li>
+  <li><strong>Containerization:</strong> Docker Desktop 4.x+ / Docker Compose v2+.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- 7. SYSTEM ARCHITECTURE -->
+<!-- ========================================================================= -->
+<h1>7. System Architecture</h1>
+<p>
+Project KEYSTONE implements a decoupled 3-tier architecture with an Nginx reverse proxy serving static React assets and routing API requests to the Spring Boot REST backend.
+</p>
+
+<div class="code-block">
++-------------------------------------------------------------------------------+
+|                            Client Web Browser / Phone                         |
++---------------------------------------+---------------------------------------+
+                                        | (HTTP / HTTPS)
+                                        v
++---------------------------------------+---------------------------------------+
+|                       Nginx Reverse Proxy (Port 80 / 3000)                    |
+|             - Serves React 19 Single Page App static build assets             |
+|             - Proxies /api/* requests to Spring Boot backend                  |
++-------------------+-----------------------------------+-----------------------+
+                    |                                   |
+           [Static UI Assets]                   [REST APIs & JWT]
+                    v                                   v
++-------------------+-------------------+   +-----------+---------------------------+
+| React 19 + Vite Frontend SPA          |   | Spring Boot 3 Backend (Port 8080)         |
+| - AuthContext & Protected Routes      |   | - Stateless JWT Security Filter Chain     |
+| - 7-Column Kanban Board Component     |   | - Governed State Machine Service Layer    |
+| - Customer Portal & KPI Dashboard     |   | - SlaMonitoringService Background Worker  |
++---------------------------------------+   +-----------+---------------------------+
+                                                        |
+                                            [JPA / Hibernate / Flyway]
+                                                        v
+                                            +-----------+---------------------------+
+                                            | PostgreSQL 16 Database (Port 5432)        |
+                                            | - Relational schema (V1 to V15)           |
+                                            | - Append-only audit history tables        |
+                                            +-------------------------------------------+
+</div>
+
+<!-- ========================================================================= -->
+<!-- 8. APPLICATION WORKFLOW -->
+<!-- ========================================================================= -->
+<h1>8. Application Workflow</h1>
+
+<h3>8.1 Governed Work Order State Machine</h3>
+<p>
+All service tickets strictly follow a deterministic state machine. Bypassing phases (e.g. attempting to jump from <code>NEW</code> directly to <code>COMPLETED</code>) is rejected at the API layer with HTTP <code>409 Conflict</code>.
+</p>
+
+<div class="code-block">
+    [*] 
+     │
+     ▼
+   [ NEW ] ──────────(Customer / Dispatcher opens ticket)
+     │
+     ▼ (Dispatcher assigns technician)
+ [ ASSIGNED ] 
+     │
+     ▼ (Technician clicks 'Start Work')
+ [ IN_PROGRESS ] ◄───┐
+     │         │     │ (Technician resumes work)
+     │         ▼     │
+     │     [ ON_HOLD ] (Waiting for parts / site access)
+     │
+     ▼ (Technician finishes work & logs parts/time)
+ [ COMPLETED ]
+     │
+     ▼ (Manager performs final audit & close-out)
+  [ CLOSED ] ──► [*]
+</div>
+
+<h3>8.2 End-to-End Operational Lifecycle Swimlane</h3>
+<ol>
+  <li><strong>Step 1 (Intake):</strong> Customer logs into Customer Portal and submits ticket (e.g. <em>"Main Server Room AC Unit Overheating"</em>). System creates <code>WorkOrder</code> with status <code>NEW</code> and computes SLA due date.</li>
+  <li><strong>Step 2 (Triage & Assignment):</strong> Dispatcher reviews ticket on Kanban board, assigns available technician. Status transitions to <code>ASSIGNED</code>.</li>
+  <li><strong>Step 3 (Field Execution):</strong> Technician starts work (<code>IN_PROGRESS</code>), replaces parts (atomic inventory decrement), logs labor time, and marks job as <code>COMPLETED</code>.</li>
+  <li><strong>Step 4 (Executive Sign-Off):</strong> Manager reviews KPI analytics and signs off on the completed order, locking financials in terminal state <code>CLOSED</code>.</li>
+</ol>
+
+<!-- ========================================================================= -->
+<!-- 9. DATABASE DESIGN -->
+<!-- ========================================================================= -->
+<h1>9. Database Design</h1>
+
+<h3>9.1 Relational Schema Description</h3>
+<ul>
+  <li><strong><code>users</code>:</strong> Stores credentials (email, BCrypt hashed password) and security <code>role</code> (<code>MANAGER</code>, <code>DISPATCHER</code>, <code>TECHNICIAN</code>, <code>CUSTOMER</code>).</li>
+  <li><strong><code>customers</code> & <code>sites</code>:</strong> Stores client enterprise accounts and physical facility locations.</li>
+  <li><strong><code>work_orders</code>:</strong> Primary entity storing tracking code (<code>WO-YYYY-0001</code>), priority, status, SLA due timestamp, and foreign keys to customer, site, and assigned technician.</li>
+  <li><strong><code>work_order_status_history</code>:</strong> Append-only immutable audit trail capturing every state change, timestamp, user ID, and transition notes.</li>
+  <li><strong><code>parts</code> & <code>part_usage</code>:</strong> Warehouse catalog and transactional parts consumption records.</li>
+  <li><strong><code>time_logs</code>:</strong> Technician labor minutes and work notes.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- 10. API & BACKEND ARCHITECTURE -->
+<!-- ========================================================================= -->
+<h1>10. API & Backend Architecture</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>HTTP Method</th>
+      <th>Endpoint</th>
+      <th>Security Role</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>POST</code></td>
+      <td><code>/api/auth/login</code></td>
+      <td>Public</td>
+      <td>Authenticates credentials and returns stateless signed JWT token</td>
+    </tr>
+    <tr>
+      <td><code>GET</code></td>
+      <td><code>/api/work-orders</code></td>
+      <td>Authenticated</td>
+      <td>Paginated multi-criteria search and filtering of work orders</td>
+    </tr>
+    <tr>
+      <td><code>POST</code></td>
+      <td><code>/api/work-orders</code></td>
+      <td>Dispatcher, Manager, Customer</td>
+      <td>Creates a new work order with SLA due time calculation</td>
+    </tr>
+    <tr>
+      <td><code>GET</code></td>
+      <td><code>/api/work-orders/{id}</code></td>
+      <td>Authenticated</td>
+      <td>Fetches full work order details including history, parts, and labor</td>
+    </tr>
+    <tr>
+      <td><code>POST</code></td>
+      <td><code>/api/work-orders/{id}/assign</code></td>
+      <td>Dispatcher, Manager</td>
+      <td>Assigns a technician and transitions order to <code>ASSIGNED</code></td>
+    </tr>
+    <tr>
+      <td><code>POST</code></td>
+      <td><code>/api/work-orders/{id}/status</code></td>
+      <td>Technician, Manager</td>
+      <td>Transitions status according to the governed state machine</td>
+    </tr>
+    <tr>
+      <td><code>POST</code></td>
+      <td><code>/api/work-orders/{id}/parts</code></td>
+      <td>Technician, Dispatcher</td>
+      <td>Atomically decrements parts inventory and logs part usage</td>
+    </tr>
+    <tr>
+      <td><code>POST</code></td>
+      <td><code>/api/work-orders/{id}/time</code></td>
+      <td>Technician</td>
+      <td>Logs technician labor minutes and technical notes</td>
+    </tr>
+    <tr>
+      <td><code>GET</code></td>
+      <td><code>/api/reports/summary</code></td>
+      <td>Dispatcher, Manager</td>
+      <td>Executive dashboard KPI summary, SLA compliance %, workload stats</td>
+    </tr>
+    <tr>
+      <td><code>POST</code></td>
+      <td><code>/api/customer/requests</code></td>
+      <td>Customer</td>
+      <td>Self-service maintenance request submission</td>
+    </tr>
+    <tr>
+      <td><code>GET</code></td>
+      <td><code>/api/customer/requests</code></td>
+      <td>Customer</td>
+      <td>Retrieves live status tracking for customer's own tickets</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================================= -->
+<!-- 11. FRONTEND ARCHITECTURE -->
+<!-- ========================================================================= -->
+<h1>11. Frontend Architecture</h1>
+<p>
+The frontend is built with <strong>React 19</strong> and <strong>Vite 8</strong>. It features:
+</p>
+<ul>
+  <li><strong><code>AuthContext</code>:</strong> Manages JWT token storage in <code>localStorage</code>, automatic header injection, and session expiration handling.</li>
+  <li><strong><code>apiClient.js</code>:</strong> Unified fetch client with automatic bearer token attachment, error normalization, and environment-aware backend routing (<code>VITE_API_URL</code>).</li>
+  <li><strong>Responsive Views:</strong> Specialized dashboard, Kanban board, technician workbench, and customer self-service views.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- 12. MAJOR FEATURES -->
+<!-- ========================================================================= -->
+<h1>12. Major Features</h1>
+<ol>
+  <li><strong>Governed State Machine:</strong> Strict transition rules preventing state skips, backed by immutable audit history logging.</li>
+  <li><strong>7-Column Visual Kanban Board:</strong> Real-time card display across <code>NEW</code>, <code>ASSIGNED</code>, <code>IN_PROGRESS</code>, <code>ON_HOLD</code>, <code>COMPLETED</code>, <code>CLOSED</code>, and <code>CANCELLED</code>.</li>
+  <li><strong>Automated SLA Engine:</strong> Calculates SLA deadlines based on ticket priority and runs background breach detection workers.</li>
+  <li><strong>Atomic Parts Decrementing:</strong> Database transactions ensure inventory stock can never go negative.</li>
+  <li><strong>Customer Self-Service Portal:</strong> Enables customers to submit tickets and view real-time visual progress timelines.</li>
+  <li><strong>Executive Analytics:</strong> Real-time KPI aggregation including SLA compliance %, parts and labor costs, and facility workloads.</li>
+</ol>
+
+<!-- ========================================================================= -->
+<!-- 13. IMPLEMENTATION -->
+<!-- ========================================================================= -->
+<h1>13. Implementation</h1>
+
+<h3>13.1 Authentication & User Management</h3>
+<ul>
+  <li><strong>Stateless JWT:</strong> JJWT generates signed tokens with user email and <code>role</code> claim.</li>
+  <li><strong>BCrypt Hashing:</strong> Passwords stored as one-way salted hashes in PostgreSQL.</li>
+  <li><strong>Security Filter Chain:</strong> <code>JwtAuthenticationFilter</code> intercepts incoming requests and populates Spring's <code>SecurityContextHolder</code>.</li>
+</ul>
+
+<h3>13.2 Role-Based Access Control (4 Personas)</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Role</th>
+      <th>Seed Email</th>
+      <th>Permissions & Accessible Views</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Manager</strong></td>
+      <td><code>manager@keystone.com</code></td>
+      <td>Executive KPI dashboard, SLA compliance reports, final close-out signoff, customer & site management.</td>
+    </tr>
+    <tr>
+      <td><strong>Dispatcher</strong></td>
+      <td><code>dispatcher@keystone.com</code></td>
+      <td>Work order intake, 7-column Kanban board, technician assignment, customer & site management, cancellation.</td>
+    </tr>
+    <tr>
+      <td><strong>Technician</strong></td>
+      <td><code>technician@keystone.com</code></td>
+      <td>Field mobile view, start/hold/complete work orders, transactional parts consumption, labor time logging.</td>
+    </tr>
+    <tr>
+      <td><strong>Customer</strong></td>
+      <td><code>customer@keystone.com</code></td>
+      <td>Customer Self-Service Portal (<code>/portal</code>), urgent maintenance ticket creation, real-time ticket tracking.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================================= -->
+<!-- 14. SCREENSHOTS & UI LAYOUTS -->
+<!-- ========================================================================= -->
+<h1>14. Screenshots & UI Layouts</h1>
+
+<div class="callout">
+  <strong>Note:</strong> In the compiled Word document, this section illustrates the primary user interface wireframes and responsive layouts for each persona.
+</div>
+
+<div class="code-block">
++----------------------------------------------------------------------------------------------------+
+|                                      DISPATCHER KANBAN BOARD                                       |
++----------------------------------------------------------------------------------------------------+
+|  🔍 Search: [ filter orders... ]   | Status: [ All ] | Priority: [ All ] | [📊 Board] [📄 List]   |
++----------------------------------------------------------------------------------------------------+
+|   NEW (2)   |  ASSIGNED (1) | IN PROGRESS (1)|   ON HOLD (1) | COMPLETED (1) |   CLOSED (1)    |
+|-------------+---------------+----------------+---------------+---------------+-----------------|
+| WO-2026-0002| WO-2026-0003  | WO-2026-0001   | WO-2026-0004  | WO-2026-0005  | WO-2026-0006    |
+| Door Sensor | Chilled Valve | AC Overheating | Generator Flt | Lighting DALI | Solar Array PM  |
+| 🔴 HIGH     | 🟡 MEDIUM     | 🔴 HIGH        | 🔴 HIGH       | 🟡 MEDIUM     | 🟢 LOW          |
+| 🏢 Meridian | 🏢 Meridian   | 🏢 Meridian    | 🏢 Apex Hub   | 🏢 Meridian   | 🏢 Omni Med     |
+| ⏱️ Due in 3h | ⏱️ Due in 18h | ⏳ Due in 1h   | ⏳ Due in 4h  | ✓ Done        | 🔒 Closed       |
++----------------------------------------------------------------------------------------------------+
+</div>
+
+<!-- ========================================================================= -->
+<!-- 15. TESTING -->
+<!-- ========================================================================= -->
+<h1>15. Testing</h1>
+<p>
+Project KEYSTONE includes an automated test suite executed via Maven:
+</p>
+<div class="code-block">
+cd KEYSTONE
+./mvnw test
+</div>
+
+<h3>Verified Test Classes:</h3>
+<ul>
+  <li><strong><code>KeystoneApplicationTests</code>:</strong> Validates Spring ApplicationContext bootstrap, Flyway schema validation, and Hibernate entity mappings.</li>
+  <li><strong><code>WorkOrderLifecycleTest</code>:</strong> Comprehensive lifecycle tests verifying valid state progression (<code>NEW</code> ➔ <code>ASSIGNED</code> ➔ <code>IN_PROGRESS</code> ➔ <code>COMPLETED</code> ➔ <code>CLOSED</code>), rejection of illegal transitions (409 Conflict), and unauthorized close-out attempts.</li>
+  <li><strong><code>InventoryTransactionTest</code>:</strong> Validates transactional stock deduction, rejection of requests exceeding available stock, and invariant preservation.</li>
+  <li><strong><code>ReportingServiceTest</code>:</strong> Verifies Executive KPI calculations, SLA compliance percentage aggregation, and technician workload rollups.</li>
+  <li><strong><code>SecurityRbacTests</code>:</strong> Tests stateless JWT generation, cryptographic claim signature parsing, and rejection of malformed tokens.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- 16. DEPLOYMENT -->
+<!-- ========================================================================= -->
+<h1>16. Deployment</h1>
+
+<h3>16.1 Docker Compose Local Orchestration</h3>
+<p>
+The application can be started locally with a single command:
+</p>
+<div class="code-block">
+git clone https://github.com/surajit654/Keystone.git
+cd Keystone
+docker-compose up --build
+</div>
+<ul>
+  <li><strong>Frontend Web App:</strong> <code>http://localhost:3000</code></li>
+  <li><strong>Backend REST API:</strong> <code>http://localhost:8080</code></li>
+  <li><strong>Interactive OpenAPI Swagger UI:</strong> <code>http://localhost:8080/swagger-ui.html</code></li>
+  <li><strong>PostgreSQL Database:</strong> <code>localhost:5432</code> (db: <code>keystone</code>, user: <code>postgres</code>, pass: <code>password</code>)</li>
+</ul>
+
+<h3>16.2 Cloud Deployment (Railway)</h3>
+<ul>
+  <li><strong>Backend:</strong> Deployed as a Docker / Java service with <strong>Root Directory</strong> = <code>/KEYSTONE</code> connected to Railway PostgreSQL.</li>
+  <li><strong>Frontend:</strong> Deployed as a web service with <strong>Root Directory</strong> = <code>/frontend</code> and environment variable <code>VITE_API_URL</code> pointing to the backend.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- 17. CHALLENGES & SOLUTIONS -->
+<!-- ========================================================================= -->
+<h1>17. Challenges & Solutions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Technical Challenge</th>
+      <th>Engineering Solution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><strong>Preventing Illegal State Machine Skips</strong></td>
+      <td>Implemented strict transition validation in <code>WorkOrderService</code> returning HTTP <code>409 Conflict</code> when invalid transitions are attempted.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>Preventing Inventory Stock Race Conditions</strong></td>
+      <td>Applied <code>@Transactional</code> boundaries with pre-check invariants to ensure inventory stock cannot drop below zero.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>Real-Time Customer-to-Kanban Synchronization</strong></td>
+      <td>Unified Customer Portal requests with the <code>WorkOrder</code> entity, generating unique tracking codes (<code>WO-YYYY-XXXX</code>) that appear instantly on the Kanban board.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><strong>Cross-Origin Deployment Compatibility (CORS)</strong></td>
+      <td>Configured <code>CorsConfig</code> with <code>allowedOriginPatterns("*")</code> and dynamic <code>VITE_API_URL</code> support for seamless multi-domain cloud hosting.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================================= -->
+<!-- 18. LEARNING OUTCOMES -->
+<!-- ========================================================================= -->
+<h1>18. Learning Outcomes</h1>
+<ul>
+  <li>Architecting enterprise Java applications with <strong>Spring Boot 3</strong> and <strong>Java 21 LTS</strong>.</li>
+  <li>Implementing stateless security and <strong>Role-Based Access Control (RBAC)</strong> using JSON Web Tokens (JWT).</li>
+  <li>Managing database migrations and schema versioning using <strong>Flyway</strong> and <strong>PostgreSQL 16</strong>.</li>
+  <li>Building reactive, high-performance user interfaces using <strong>React 19</strong>, <strong>Vite</strong>, and CSS design tokens.</li>
+  <li>Multi-stage containerization with <strong>Docker</strong> and <strong>Docker Compose</strong> for automated cloud deployments.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- 19. FUTURE SCOPE -->
+<!-- ========================================================================= -->
+<h1>19. Future Scope</h1>
+<ol>
+  <li><strong>Real-Time WebSockets / SSE:</strong> Push live status updates directly to Dispatcher and Technician boards without manual polling.</li>
+  <li><strong>GPS & Route Optimization:</strong> Integrate map services to provide optimal routing for technicians across service sites.</li>
+  <li><strong>Mobile App with Offline Support:</strong> Progressive Web App (PWA) with offline caching for field engineers working in low-connectivity areas.</li>
+  <li><strong>AI Predictive Maintenance:</strong> Machine learning models to forecast equipment failures before critical breakdowns occur.</li>
+</ol>
+
+<!-- ========================================================================= -->
+<!-- 20. CONCLUSION -->
+<!-- ========================================================================= -->
+<h1>20. Conclusion</h1>
+<p>
+Project KEYSTONE provides a robust, enterprise-grade Field Service and Work Order Management platform for Meridian Facilities Management. By enforcing strict state machine governance, automated SLA monitoring, transactional inventory tracking, 4-role RBAC security, and an intuitive modern UI, the platform eliminates paper work orders, streamlines dispatch operations, protects inventory margins, and empowers executive decision-making.
+</p>
+
+<!-- ========================================================================= -->
+<!-- 21. GITHUB & LIVE DEMO LINKS -->
+<!-- ========================================================================= -->
+<h1>21. GitHub & Live Demo Links</h1>
+<ul>
+  <li><strong>GitHub Repository:</strong> <a href="https://github.com/surajit654/Keystone">https://github.com/surajit654/Keystone</a></li>
+  <li><strong>Interactive OpenAPI Documentation:</strong> <code>http://localhost:8080/swagger-ui.html</code></li>
+  <li><strong>Docker Compose Setup:</strong> <code>docker-compose up --build</code></li>
+  <li><strong>Default Demo Accounts:</strong> <code>manager@keystone.com</code> · <code>dispatcher@keystone.com</code> · <code>technician@keystone.com</code> · <code>customer@keystone.com</code> (Password: <code>password</code>)</li>
+</ul>
+
+</div>
+
+</body>
+</html>
